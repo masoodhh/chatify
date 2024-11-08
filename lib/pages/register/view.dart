@@ -1,12 +1,17 @@
 import 'package:chatify/components/buttons/primary_button.dart';
 import 'package:chatify/components/buttons/underline_button.dart';
+import 'package:chatify/components/loading.dart';
 import 'package:chatify/components/textfields/primary_textfield.dart';
+import 'package:chatify/constants/config.dart';
 import 'package:chatify/constants/text_styles.dart';
+import 'package:chatify/pages/register/register.get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Register extends StatelessWidget {
-  const Register({Key? key}) : super(key: key);
+  Register({Key? key}) : super(key: key);
+  final registerGet = RegisterGet();
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class Register extends StatelessWidget {
         title: const Text('Register'),
         leading: IconButton(
           padding: EdgeInsets.zero,
-          onPressed: () {},
+          onPressed: () => Get.back(),
           icon: const Icon(Icons.arrow_back),
         ),
       ),
@@ -31,40 +36,48 @@ class Register extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 60,
                   backgroundColor: Colors.black,
-                  child: Icon(CupertinoIcons.person_add,
-                      size: 80, color: Colors.white),
+                  child: Icon(CupertinoIcons.person_add, size: 80, color: Colors.white),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Column(
                   children: [
-                    const PrimaryTextfield(
+                    PrimaryTextfield(
                       maxLength: 30,
                       hint: 'Enter Full name',
+                      onChanged: (newVal) => registerGet.fullName.value = newVal,
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 15.0),
                       child: PrimaryTextfield(
-                          hint: 'Enter Username',
-                          prefixIcon: CupertinoIcons.person),
+                        hint: 'Enter Username',
+                        prefixIcon: CupertinoIcons.person,
+                        onChanged: (newVal) => registerGet.userName.value = newVal,
+                      ),
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 15.0),
                       child: PrimaryTextfield(
-                          hint: 'Enter Password',
-                          isPassword: true,
-                          prefixIcon: CupertinoIcons.lock),
+                        hint: 'Enter Password',
+                        isPassword: true,
+                        prefixIcon: CupertinoIcons.lock,
+                        onChanged: (newVal) => registerGet.password.value = newVal,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
-                      child: PrimaryButton(
-                          title: 'Create New Account', onPressed: () {}),
+                      child: Obx(() => registerGet.loading.value
+                          ? MyLoading()
+                          : PrimaryButton(title: 'Create New Account', onPressed: registerGet.createAccount)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: UnderlineButton(
-                          title: 'You already registered?', onPressed: () {}),
+                          title: 'You already registered?',
+                          onPressed: () {
+                            Get.toNamed(PageRoutes.signIn);
+                          }),
                     ),
                   ],
                 ),
@@ -76,42 +89,4 @@ class Register extends StatelessWidget {
     );
   }
 
-  Widget get _title => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Welcome to',
-              style: MyTextStyles.caption,
-            ),
-            Text(
-              'Chatify App',
-              style: MyTextStyles.header,
-            ),
-          ],
-        ),
-      );
-
-  Widget get _logo => Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: SizedBox(
-            width: 100,
-            height: 100,
-            child: Image.asset('assets/images/png/chatify_logo.png'),
-          ),
-        ),
-      );
-
-  Widget get _buttons => Column(
-        children: [
-          PrimaryButton(title: 'Sign In', onPressed: () {}),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child:
-                UnderlineButton(title: 'Create new account?', onPressed: () {}),
-          ),
-        ],
-      );
 }

@@ -1,4 +1,3 @@
-
 import 'package:chatify/constants/text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +6,10 @@ class PrimaryTextfield extends StatelessWidget {
   final IconData? prefixIcon;
   final bool? isPassword;
   final int? maxLength;
+  final Function(String)? onChanged;
+
   const PrimaryTextfield(
-      {Key? key, this.hint, this.prefixIcon, this.isPassword, this.maxLength})
+      {Key? key, this.hint, this.prefixIcon, this.isPassword, this.maxLength, this.onChanged})
       : super(key: key);
 
   @override
@@ -16,6 +17,7 @@ class PrimaryTextfield extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextField(
+        onChanged: onChanged != null ? (newValue) => onChanged!(newValue) : null,
         maxLength: maxLength ?? 100,
         style: MyTextStyles.textfield,
         maxLines: 1,

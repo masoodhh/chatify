@@ -1,9 +1,10 @@
+import 'package:chatify/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MessagesTabbar extends StatelessWidget {
   final TabController controller;
-  const MessagesTabbar({Key? key, required this.controller}) : super(key: key);
+  const MessagesTabbar({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class MessagesTabbar extends StatelessWidget {
           child: TabBar(
               controller: controller,
               indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: MyColors.primaryColor,
               tabs: const [
                 Padding(
                   padding: EdgeInsets.all(12),

@@ -2,7 +2,7 @@ import 'package:chatify/constants/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class MessageWidget extends StatelessWidget {
-  const MessageWidget({Key? key}) : super(key: key);
+  const MessageWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +30,10 @@ class MessageWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: Text('Emily Dove', style: MyTextStyles.title),
