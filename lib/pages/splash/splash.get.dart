@@ -1,3 +1,4 @@
+import 'package:chatify/cacheManager/hive.cache.dart';
 import 'package:chatify/cacheManager/user.cache.dart';
 import 'package:chatify/constants/config.dart';
 import 'package:chatify/init.dart';
@@ -21,7 +22,7 @@ class SplashGet extends GetxController {
      logger.i("splash token fresher checked");
       // Init Socket & HiveCache Manager
       AppInit().initSocketClient();
-      // await HiveCacheManager().init();
+      await HiveCacheManager().init();
       logger.i("splash token fresher checked 2");
 
       // Get latest offline messages

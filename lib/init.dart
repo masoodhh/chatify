@@ -1,3 +1,4 @@
+import 'package:chatify/cacheManager/hive.cache.dart';
 import 'package:chatify/constants/config.dart';
 import 'package:chatify/models/message.dart';
 import 'package:chatify/models/user.dart';
@@ -50,12 +51,12 @@ class AppInit {
         print(er);
       }
     }
-    /*if (message.roomId == '') {
+    if (message.roomId == '') {
       HiveCacheManager().update(message.user.id, message);
       messagesGet.contactsStream.sink.add(true);
     } else {
       HiveCacheManager().updateRoom(message.roomId, message);
       messagesGet.roomStream.sink.add(true);
-    }*/
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:chatify/constants/config.dart';
 import 'package:chatify/models/contact.dart';
 import 'package:chatify/models/message.dart';
 import 'package:chatify/models/room.dart';
@@ -76,7 +77,8 @@ class HiveCacheManager {
     await init();
     if (contactsBox != null && contactsBox!.isOpen) {
       final contact = contactsBox!.get(userId);
-      for (int i = 0; i < contact!.messages.length; i++) {
+      for (int i = contact!.messages.length; i >=0; i--) {
+        if (contact!.messages[i].seen) break;
         contact.messages[i].seen = true;
       }
       await contactsBox!.put(userId, contact);
@@ -122,6 +124,7 @@ class HiveCacheManager {
   }
 
   Future<List<Contact>> getAll() async {
+    logger.w("getAll");
     await init();
     if (contactsBox != null && contactsBox!.isOpen) {
       return contactsBox!.values.toList();

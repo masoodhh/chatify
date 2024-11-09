@@ -28,7 +28,7 @@ class ChatGet extends GetxController {
   final messagesGet = Get.find<MessagesGet>();
 
   void initRoom() async {
-    /* room = await HiveCacheManager().getRoom(room?.id ?? '');
+     room = await HiveCacheManager().getRoom(room?.id ?? '');
 
     await HiveCacheManager().updateLastSeenRoom(room?.id ?? '');
     (Get.find<MessagesGet>()).roomStream.sink.add(true);
@@ -39,11 +39,10 @@ class ChatGet extends GetxController {
 
     Future.delayed(const Duration(milliseconds: 100))
         .then((_) => scrollController.jumpTo(scrollController.position.maxScrollExtent));
- */
   }
 
   void initContact() async {
-    /*contact = await HiveCacheManager().get(user!.id);
+    contact = await HiveCacheManager().get(user!.id);
 
     await HiveCacheManager().updateLastSeen(user!.id);
     (Get.find<MessagesGet>()).contactsStream.sink.add(true);
@@ -54,15 +53,13 @@ class ChatGet extends GetxController {
 
     Future.delayed(const Duration(milliseconds: 100))
         .then((_) => scrollController.jumpTo(scrollController.position.maxScrollExtent));
-  */
   }
   void userInfo() {
-    /* if (contact == null) {
+     if (contact == null) {
       Get.toNamed(PageRoutes.roomProperties, arguments: room!);
     } else {
       Get.toNamed(PageRoutes.contactProperties, arguments: contact!);
     }
- */
   }
 
   void send() {
@@ -72,16 +69,16 @@ class ChatGet extends GetxController {
     Message(date: DateTime.now(), message: message.value, user: Config.me!.exportToUser(), seen: true);
     messages.add(myMsg);
 
-    // HiveCacheManager().update(user!.id, myMsg);
+    HiveCacheManager().update(user!.id, myMsg);
 
     message.value = '';
     controller.clear();
     onUpdateStream.sink.add(true);
-    // messagesGet.contactsStream.sink.add(true);
+    messagesGet.contactsStream.sink.add(true);
   }
 
   void sendMessageInRoom() {
-    /*  if (message.value.isEmpty) return;
+      if (message.value.isEmpty) return;
     appInit.socket?.emit('send-message', {'message': message.value, 'roomId': room?.id ?? ''});
     final myMsg = Message(
         date: DateTime.now(),
@@ -97,7 +94,6 @@ class ChatGet extends GetxController {
     controller.clear();
     onUpdateStream.sink.add(true);
     messagesGet.roomStream.sink.add(true);
-  */
   }
   @override
   void onInit() {

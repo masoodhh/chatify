@@ -22,7 +22,7 @@ class AddContactGet extends GetxController {
       loading.value = false;
       if (result != null) {
         final messagesGet = Get.find<MessagesGet>();
-        // await HiveCacheManager().save(Contact(user: result, messages: []));
+        await HiveCacheManager().save(Contact(user: result, messages: []));
         messagesGet.init();
 
         Get.back();

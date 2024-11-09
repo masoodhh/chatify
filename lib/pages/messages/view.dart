@@ -31,7 +31,7 @@ class _MessagesState extends State<Messages> with TickerProviderStateMixin {
       appBar: AppBar(
         title: const Text('MESSAGES'),
         leading: IconButton(
-            onPressed: () => Get.toNamed(PageRoutes.setting),
+            onPressed: () => Get.toNamed(PageRoutes.settings),
             icon: const Icon(CupertinoIcons.line_horizontal_3_decrease)),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.search)),

@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: PageRoutes.signIn, page: () => Login()),
         GetPage(name: PageRoutes.register, page: () => Register()),
         GetPage(name: PageRoutes.messages, page: () => Messages()),
-        GetPage(name: PageRoutes.setting, page: () => Setting()),
+        GetPage(name: PageRoutes.settings, page: () => Setting()),
         GetPage(name: PageRoutes.chat, page: () => Chat()),
       ],
     );
