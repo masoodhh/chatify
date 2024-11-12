@@ -25,8 +25,8 @@ class AppInit {
     AppInit().socket = IO.io('${Config.socketServerBaseUrl}?token=${Config.me!.token}',
         IO.OptionBuilder().setTransports(["websocket"]).disableAutoConnect().enableForceNew().build());
 
-    AppInit().socket?.onConnect((data) => print('Connected'));
-    AppInit().socket?.onDisconnect((data) => print('Disconnected'));
+    AppInit().socket?.onConnect((data) => logger.i('Connected aaaa'));
+    AppInit().socket?.onDisconnect((data) => logger.i('Disconnected aaaa'));
     AppInit().socket?.on('onMessage', (data) => _onMessageHandler(data));
 
     AppInit().socket?.connect();

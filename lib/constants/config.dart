@@ -4,14 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
-Logger logger = Logger();
+
+Logger logger = Logger(
+  printer: PrettyPrinter(
+    // methodCount: 0, // تعداد خطوط stack trace. صفر برای عدم نمایش.
+    errorMethodCount: 0, // تعداد خطوط stack trace برای خطاها.
+    lineLength: 100, // طول هر خط لاگ
+    // colors: false, // غیرفعال‌سازی رنگ‌ها
+    printEmojis: false, // نمایش یا عدم نمایش ایموجی‌ها
+    printTime: true, // نمایش زمان
+  ),
+);
 
 class Config {
   Config._();
 
-  static const httpServicesBaseUrl = 'http://10.0.2.2:8888';
-  static const httpsServicesBaseUrl = 'https://10.0.2.2:8888';
-  static const socketServerBaseUrl = 'http://10.0.2.2:8888';
+  // mirror mobile
+  static const baseUrl = "10.0.2.2";
+
+  //physical mobile
+  // static const baseUrl = "192.168.1.108";
+
+  static const httpServicesBaseUrl = 'http://$baseUrl:8888';
+  static const httpsServicesBaseUrl = 'https://$baseUrl:8888';
+  static const socketServerBaseUrl = 'http://$baseUrl:8888';
 
   static String showAvatarBaseUrl(String userId) => '${Config.httpServicesBaseUrl}/avatar/$userId';
 
@@ -58,6 +74,8 @@ class PageRoutes {
   static const String settings = '/settings';
   static const String splash = '/splash';
   static const String chat = '/chat';
+
+  static const String test = '/test';
 
   static const String roomProperties = '/room-properties';
   static const String contactProperties = '/contact-properties';

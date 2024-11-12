@@ -28,7 +28,7 @@ class ChatGet extends GetxController {
   final messagesGet = Get.find<MessagesGet>();
 
   void initRoom() async {
-     room = await HiveCacheManager().getRoom(room?.id ?? '');
+    room = await HiveCacheManager().getRoom(room?.id ?? '');
 
     await HiveCacheManager().updateLastSeenRoom(room?.id ?? '');
     (Get.find<MessagesGet>()).roomStream.sink.add(true);
@@ -42,6 +42,7 @@ class ChatGet extends GetxController {
   }
 
   void initContact() async {
+    logger.w("initContact 1");
     contact = await HiveCacheManager().get(user!.id);
 
     await HiveCacheManager().updateLastSeen(user!.id);
@@ -54,8 +55,9 @@ class ChatGet extends GetxController {
     Future.delayed(const Duration(milliseconds: 100))
         .then((_) => scrollController.jumpTo(scrollController.position.maxScrollExtent));
   }
+
   void userInfo() {
-     if (contact == null) {
+    if (contact == null) {
       Get.toNamed(PageRoutes.roomProperties, arguments: room!);
     } else {
       Get.toNamed(PageRoutes.contactProperties, arguments: contact!);
@@ -66,7 +68,7 @@ class ChatGet extends GetxController {
     if (message.value.isEmpty) return;
     appInit.socket?.emit('send-message', {'message': message.value, 'to': user?.id ?? ''});
     final myMsg =
-    Message(date: DateTime.now(), message: message.value, user: Config.me!.exportToUser(), seen: true);
+        Message(date: DateTime.now(), message: message.value, user: Config.me!.exportToUser(), seen: true);
     messages.add(myMsg);
 
     HiveCacheManager().update(user!.id, myMsg);
@@ -78,7 +80,7 @@ class ChatGet extends GetxController {
   }
 
   void sendMessageInRoom() {
-      if (message.value.isEmpty) return;
+    if (message.value.isEmpty) return;
     appInit.socket?.emit('send-message', {'message': message.value, 'roomId': room?.id ?? ''});
     final myMsg = Message(
         date: DateTime.now(),
@@ -95,6 +97,7 @@ class ChatGet extends GetxController {
     onUpdateStream.sink.add(true);
     messagesGet.roomStream.sink.add(true);
   }
+
   @override
   void onInit() {
     if (Get.arguments.runtimeType == Room) {
@@ -105,16 +108,13 @@ class ChatGet extends GetxController {
       user = Get.arguments;
       appInit.currentChatUser = user;
       initContact();
-      // }
-      user = Get.arguments;
-
-      onUpdateStream.listen((_) {
-        Future.delayed(const Duration(milliseconds: 100))
-            .then((_) => scrollController.jumpTo(scrollController.position.maxScrollExtent));
-      });
-
-      super.onInit();
     }
+    onUpdateStream.listen((_) {
+      Future.delayed(const Duration(milliseconds: 100))
+          .then((_) => scrollController.jumpTo(scrollController.position.maxScrollExtent));
+    });
+
+    super.onInit();
 
     @override
     void dispose() {
@@ -122,7 +122,5 @@ class ChatGet extends GetxController {
       appInit.currentChatRoom = null;
       super.dispose();
     }
-
-
   }
 }

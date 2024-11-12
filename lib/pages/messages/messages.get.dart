@@ -1,6 +1,6 @@
 import 'package:chatify/cacheManager/hive.cache.dart';
 import 'package:chatify/components/dialogs/addContact/addContact.dialog.dart';
-// import 'package:chatify/components/dialogs/addRoom/addRoom.dialog.dart';
+import 'package:chatify/components/dialogs/addRoom/addRoom.dialog.dart';
 import 'package:chatify/models/contact.dart';
 import 'package:chatify/models/room.dart';
 import 'package:get/get.dart';
@@ -37,6 +37,6 @@ class MessagesGet extends GetxController {
   }
 
   void addRoom() {
-    // Get.dialog(AddRoomDialog(), barrierDismissible: true);
+    Get.dialog(AddRoomDialog(), barrierDismissible: true);
   }
 }

@@ -77,11 +77,14 @@ class HiveCacheManager {
     await init();
     if (contactsBox != null && contactsBox!.isOpen) {
       final contact = contactsBox!.get(userId);
-      for (int i = contact!.messages.length; i >=0; i--) {
-        if (contact!.messages[i].seen) break;
-        contact.messages[i].seen = true;
+
+      if (contact != null && contact.messages.isNotEmpty) {
+        for (int i = contact.messages.length - 1; i >= 0; i--) {
+          if (contact.messages[i].seen && contact.messages[i].user.id != Config.me!.userId) break;
+          contact.messages[i].seen = true;
+        }
+        await contactsBox!.put(userId, contact);
       }
-      await contactsBox!.put(userId, contact);
     }
   }
 
@@ -124,7 +127,6 @@ class HiveCacheManager {
   }
 
   Future<List<Contact>> getAll() async {
-    logger.w("getAll");
     await init();
     if (contactsBox != null && contactsBox!.isOpen) {
       return contactsBox!.values.toList();
@@ -145,6 +147,7 @@ class HiveCacheManager {
   clearAll() async {
     await init();
     await contactsBox!.clear();
+    await roomsBox!.clear();
     contactsBox = null;
   }
 }

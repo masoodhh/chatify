@@ -17,6 +17,7 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> with TickerProviderStateMixin {
   TabController? _controller;
+  // final messagesGet = Get.find<MessagesGet>();
   final messagesGet = Get.put(MessagesGet());
 
   @override
@@ -37,27 +38,24 @@ class _MessagesState extends State<Messages> with TickerProviderStateMixin {
           IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.search)),
         ],
       ),
-      body: Stack(
+      body: Column(
         children: [
-          TabBarView(controller: _controller, children: [
+          MessagesTabbar(controller: _controller!),
+          Expanded(
+              child: TabBarView(controller: _controller, children: [
             MessagesChatsTab(),
             MessagesRoomsTab(),
-          ]),
-          MessagesTabbar(controller: _controller!),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingActionButton(
-                shape: CircleBorder(),
-                onPressed: messagesGet.addContact,
-                backgroundColor: MyColors.primaryColor,
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                )),
-          )
+          ])),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          shape: CircleBorder(),
+          onPressed:()=> _controller?.index==0? messagesGet.addContact():messagesGet.addRoom(),
+          backgroundColor: MyColors.primaryColor,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          )),
     );
   }
 }

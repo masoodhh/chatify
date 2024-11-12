@@ -11,6 +11,7 @@ import 'package:chatify/pages/register/view.dart';
 import 'package:chatify/pages/splash/view.dart';
 import 'package:chatify/pages/welcome/view.dart';
 import 'package:chatify/settings/view.dart';
+import 'package:chatify/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: Config.primaryThemeData,
       initialRoute: PageRoutes.splash,
+      // initialRoute: PageRoutes.test,
       getPages: [
         GetPage(name: PageRoutes.splash, page: () => Splash()),
         GetPage(name: PageRoutes.welcome, page: () => const Welcome()),
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: PageRoutes.register, page: () => Register()),
         GetPage(name: PageRoutes.messages, page: () => Messages()),
         GetPage(name: PageRoutes.settings, page: () => Setting()),
+        GetPage(name: PageRoutes.test, page: () => Test()),
         GetPage(name: PageRoutes.chat, page: () => Chat()),
       ],
     );

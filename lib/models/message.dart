@@ -37,7 +37,7 @@ class Message extends HiveObject {
       this.seen = false});
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-      date: DateTime.now(),
+      date:DateTime.parse( json['date']) ?? DateTime.now(),
       message: json['message'],
       user: User.fromSocketJson(json['from']),
       seen: false,
