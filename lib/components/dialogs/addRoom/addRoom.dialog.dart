@@ -15,13 +15,12 @@ class AddRoomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
         child: AlertDialog(
           backgroundColor: Colors.white,
           content: SizedBox(
             width: Get.size.width - 100, // Width of the dialog
-            height: Get.size.height / 1.3, // Height of the dialog
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(top: 15, bottom: 10),

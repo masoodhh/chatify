@@ -11,7 +11,6 @@ class TokenFresherService extends BaseService {
 
   Future<void> call(Map<String, dynamic> args) async {
     try {
-      logger.i("TokenFresherService start");
       final client = http.Client();
       final response =
           await client.post(url, body: args, headers: {'Authorization': 'Bearer ${Config.me!.token}'});

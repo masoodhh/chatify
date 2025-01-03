@@ -3,6 +3,7 @@ import 'package:chatify/models/me.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:rxdart/rxdart.dart';
 
 
 Logger logger = Logger(
@@ -15,16 +16,25 @@ Logger logger = Logger(
     printTime: true, // نمایش زمان
   ),
 );
-
+enum ConnectionStatus {
+  online,
+  connecting,
+  connectionFailed,
+}
 class Config {
   Config._();
 
-  // mirror mobile
-  static const baseUrl = "10.0.2.2";
+  static BehaviorSubject<ConnectionStatus> connectionStateStream =
+  BehaviorSubject.seeded(ConnectionStatus.connecting);
 
-  //physical mobile
-  // static const baseUrl = "192.168.1.108";
+  static const baseUrl = "10.0.2.2"; // mirror mobile
+  // static const baseUrl = "192.168.1.110"; //physical mobile
+  // static const baseUrl = "chat-server-6xvy.onrender.com"; // render server
 
+  /*static const httpServicesBaseUrl = 'http://$baseUrl:8888';
+  static const httpsServicesBaseUrl = 'https://$baseUrl:8888';
+  static const socketServerBaseUrl = 'http://$baseUrl:8888';
+  */
   static const httpServicesBaseUrl = 'http://$baseUrl:8888';
   static const httpsServicesBaseUrl = 'https://$baseUrl:8888';
   static const socketServerBaseUrl = 'http://$baseUrl:8888';

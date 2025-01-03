@@ -1,5 +1,6 @@
 import 'package:chatify/constants/colors.dart';
 import 'package:chatify/constants/config.dart';
+import 'package:chatify/constants/text_styles.dart';
 import 'package:chatify/pages/messages/messages.get.dart';
 import 'package:chatify/pages/messages/view.chats.dart';
 import 'package:chatify/pages/messages/view.rooms.dart';
@@ -7,6 +8,8 @@ import 'package:chatify/pages/messages/view.tabbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../components/connectionChecker.widget.dart';
 
 class Messages extends StatefulWidget {
   const Messages({super.key});
@@ -17,7 +20,6 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> with TickerProviderStateMixin {
   TabController? _controller;
-  // final messagesGet = Get.find<MessagesGet>();
   final messagesGet = Get.put(MessagesGet());
 
   @override
@@ -30,12 +32,29 @@ class _MessagesState extends State<Messages> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MESSAGES'),
+        title: Container(
+            child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Messages',
+              style: MyTextStyles.header2,
+            ),
+            ConnectionChecker(),
+          ],
+        )),
         leading: IconButton(
             onPressed: () => Get.toNamed(PageRoutes.settings),
-            icon: const Icon(CupertinoIcons.line_horizontal_3_decrease)),
+            icon: const Icon(Icons.more_vert),),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.search)),
+          Obx(
+            () => IconButton(
+                onPressed: () => messagesGet.isSearchEnabled.value = !messagesGet.isSearchEnabled.value,
+                icon: messagesGet.isSearchEnabled.value
+                    ? const Icon(Icons.close)
+                    : const Icon(CupertinoIcons.search)),
+          ),
         ],
       ),
       body: Column(
@@ -50,7 +69,7 @@ class _MessagesState extends State<Messages> with TickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
           shape: CircleBorder(),
-          onPressed:()=> _controller?.index==0? messagesGet.addContact():messagesGet.addRoom(),
+          onPressed: () => _controller?.index == 0 ? messagesGet.addContact() : messagesGet.addRoom(),
           backgroundColor: MyColors.primaryColor,
           child: Icon(
             Icons.add,

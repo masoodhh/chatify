@@ -54,15 +54,19 @@ class AddRoomGet extends GetxController {
         loading.value = false;
         if (result != null) {
           logger.i(result);
-          final messagesGet = Get.find<MessagesGet>();
+          /*final messagesGet = Get.find<MessagesGet>();
           await HiveCacheManager().saveRoom(Room(
               creator: Config.me!.exportToUser(),
               name: roomName.value,
               desc: roomDescription.value,
               members: result['members'],
               id: result['roomId']));
-          messagesGet.init();
+          messagesGet.init();*/
           Get.back();
+        }else{
+          logger.i("else ....");
+          Get.back();
+
         }
       } catch (er) {
         print(er);

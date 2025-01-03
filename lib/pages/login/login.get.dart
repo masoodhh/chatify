@@ -17,8 +17,11 @@ class LoginGet extends GetxController {
       }
       try {
         LoginService loginService = LoginService();
+        logger.i("userName: " + userName.value + " password: " + password.value );
         final result = await loginService.call({"userName": userName.value, "password": password.value});
+        logger.i("userName: 1" );
         if (result) {
+          logger.i("userName: 3" );
           Get.offAllNamed(PageRoutes.splash);
         }
       } catch (error) {

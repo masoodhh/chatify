@@ -2,6 +2,7 @@ import 'package:chatify/cacheManager/hive.cache.dart';
 import 'package:chatify/cacheManager/user.cache.dart';
 import 'package:chatify/constants/config.dart';
 import 'package:chatify/init.dart';
+import 'package:chatify/services/checkConnection.service.dart';
 import 'package:chatify/services/initServices.dart';
 import 'package:chatify/services/tokenFresher.service.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,6 @@ import 'package:get/get.dart';
 class SplashGet extends GetxController {
   @override
   void onInit() {
-    logger.i("splash.get inited");
     _init();
     super.onInit();
   }
@@ -19,6 +19,12 @@ class SplashGet extends GetxController {
     if (UserCacheManager.isUserLoggedIn) {
       Config.me = UserCacheManager.getUserData();
       // Refresh Token
+
+      final checkConnectionService =  CheckConnectionService();
+      final isConnected = await checkConnectionService.call({});
+      if (!isConnected) {
+        Get.offAllNamed(PageRoutes.messages);
+      }
       final service = TokenFresherService();
       await service.call({'userId': Config.me!.userId, 'userName': Config.me!.username});
       // Init Socket & HiveCache Manager

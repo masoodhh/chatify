@@ -1,5 +1,4 @@
 import 'package:chatify/constants/config.dart';
-import 'package:chatify/constants/text_styles.dart';
 import 'package:chatify/models/contact.dart';
 import 'package:chatify/models/message.dart';
 import 'package:chatify/models/room.dart';
@@ -7,6 +6,8 @@ import 'package:chatify/models/user.dart';
 import 'package:chatify/pages/chat/view.dart';
 import 'package:chatify/pages/login/view.dart';
 import 'package:chatify/pages/messages/view.dart';
+import 'package:chatify/pages/properties/view.contact.dart';
+import 'package:chatify/pages/properties/view.room.dart';
 import 'package:chatify/pages/register/view.dart';
 import 'package:chatify/pages/splash/view.dart';
 import 'package:chatify/pages/welcome/view.dart';
@@ -17,7 +18,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'cacheManager/user.cache.dart';
 
 void main() async {
   await GetStorage.init();
@@ -35,14 +35,12 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  final as = "a";
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: Config.primaryThemeData,
       initialRoute: PageRoutes.splash,
       // initialRoute: PageRoutes.test,
@@ -55,6 +53,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: PageRoutes.settings, page: () => Setting()),
         GetPage(name: PageRoutes.test, page: () => Test()),
         GetPage(name: PageRoutes.chat, page: () => Chat()),
+        GetPage(name: PageRoutes.roomProperties, page: () => RoomProperties()),
+        GetPage(name: PageRoutes.contactProperties, page: () => ContactProperties()),
       ],
     );
   }

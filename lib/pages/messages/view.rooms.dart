@@ -18,26 +18,26 @@ class MessagesRoomsTab extends StatelessWidget {
       child: Column(
         children: [
           Obx(
-                () => messagesGet.isSearchEnabled.value
+            () => messagesGet.isSearchEnabled.value
                 ? SizedBox(
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: TextField(
-                    onChanged: (newVal) {
-                      messagesGet.searchValue.value = newVal;
-                      messagesGet.roomStream.sink.add(true);
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Search ...',
-                      border: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                    ),
-                  ),
-                ))
+                    height: 50,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: TextField(
+                        onChanged: (newVal) {
+                          messagesGet.searchValue.value = newVal;
+                          messagesGet.roomStream.sink.add(true);
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'Search ...',
+                          border: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
+                      ),
+                    ))
                 : Container(),
           ),
           Expanded(
@@ -46,20 +46,19 @@ class MessagesRoomsTab extends StatelessWidget {
                 builder: (context, snapshot) {
                   final rooms = messagesGet.searchValue.value.isNotEmpty
                       ? messagesGet.rooms
-                      .where((element) => (element.name
-                      .toLowerCase()
-                      .contains(
-                      messagesGet.searchValue.value.toLowerCase())))
-                      .toList()
+                          .where((element) => (element.name
+                              .toLowerCase()
+                              .contains(messagesGet.searchValue.value.toLowerCase())))
+                          .toList()
                       : messagesGet.rooms;
                   return rooms.isNotEmpty
                       ? ListView.builder(
-                      itemBuilder: (context, index) {
-                        return RoomWidget(
-                          room: rooms[index],
-                        );
-                      },
-                      itemCount: rooms.length)
+                          itemBuilder: (context, index) {
+                            return RoomWidget(
+                              room: rooms[index],
+                            );
+                          },
+                          itemCount: rooms.length)
                       : _emptyWidget;
                 }),
           ),
@@ -69,25 +68,24 @@ class MessagesRoomsTab extends StatelessWidget {
   }
 
   Widget get _emptyWidget => Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(
-          CupertinoIcons.group,
-          size: 70,
-          color: Colors.grey.shade300,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              CupertinoIcons.group,
+              size: 70,
+              color: Colors.grey.shade300,
+            ),
+            Text(
+              'No Rooms!',
+              style: MyTextStyles.headline.copyWith(color: Colors.grey, fontSize: 22),
+            ),
+            UnderlineButton(
+              title: 'Make new one',
+              onPressed: messagesGet.addRoom,
+            )
+          ],
         ),
-        Text(
-          'No Rooms!',
-          style: MyTextStyles.headline
-              .copyWith(color: Colors.grey, fontSize: 22),
-        ),
-        UnderlineButton(
-          title: 'Make new one',
-          onPressed: messagesGet.addRoom,
-        )
-      ],
-    ),
-  );
+      );
 }

@@ -3,7 +3,12 @@ import 'package:chatify/models/contact.dart';
 import 'package:chatify/models/message.dart';
 import 'package:chatify/models/room.dart';
 import 'package:chatify/models/user.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hive/hive.dart';
+
+import '../pages/messages/messages.get.dart';
+import '../services/addContact.service.dart';
 
 class HiveCacheManager {
   static final HiveCacheManager _singleton = HiveCacheManager._internal();
@@ -59,17 +64,36 @@ class HiveCacheManager {
     await init();
     if (contactsBox != null && contactsBox!.isOpen) {
       final contact = contactsBox!.get(userId);
-      contact!.messages.add(msg);
-      await contactsBox!.put(userId, contact);
+      // * if sender is me then contact should be existed
+      if (contact == null) {
+        final service = AddContactService();
+        final result = await service.call({'username': msg.user.username});
+        if (result != null) {
+          final messagesGet = Get.find<MessagesGet>();
+          await save(Contact(user: result, messages: [msg]));
+          messagesGet.init();
+        }
+      } else {
+        contact!.messages.add(msg);
+        await contactsBox!.put(userId, contact);
+      }
     }
   }
 
   updateRoom(String roomId, Message msg) async {
     await init();
+    logger.i("update user with message 1");
     if (roomsBox != null && roomsBox!.isOpen) {
       final room = roomsBox!.get(roomId);
-      room!.messages.add(msg);
-      await roomsBox!.put(roomId, room);
+      if (room == null) {
+        logger.i("update user with message 2");
+        //TODO: add new room
+      } else {
+        logger.i("update user with message 3");
+        room!.messages.add(msg);
+        await roomsBox!.put(roomId, room);
+        logger.i("update user with message 4");
+      }
     }
   }
 

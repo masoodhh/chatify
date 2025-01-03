@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 part 'message.g.dart';
 
 @HiveType(typeId: 1)
-class Message extends HiveObject {
+class   Message extends HiveObject {
   @HiveField(0)
   final User user;
 

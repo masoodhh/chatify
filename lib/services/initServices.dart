@@ -10,31 +10,22 @@ import 'package:chatify/services/base.dart';
 import 'package:http/http.dart' as http;
 
 class InitServices extends BaseService {
-  final Uri url = Uri.parse('${Config.httpServicesBaseUrl}/init');
-  final Uri urlDrop = Uri.parse('${Config.httpServicesBaseUrl}/clear-latest-offline-messages');
+  final Uri _url = Uri.parse('${Config.httpServicesBaseUrl}/init');
+  final Uri _urlDrop = Uri.parse('${Config.httpServicesBaseUrl}/clear-latest-offline-messages');
 
-/*
- final Uri url = Uri.parse('${Config.httpsServicesBaseUrl}/init');
-  final Uri urlDrop = Uri.parse('${Config.httpsServicesBaseUrl}/clear-latest-offline-messages');
-*/
-  // fullname: searchMemberDataInUsers(room['users'], memberItem['userId'], true),
-
-  String searchMemberDataInUsers(List<dynamic> json, String userId, bool fullName) {
+/*  String _searchMemberDataInUsers(List<dynamic> json, String userId, bool fullName) {
     final foundItems = json.where((element) => element['userId'] == userId).toList();
     if (foundItems.isNotEmpty) {
-      if (fullName) {
-        return foundItems.first['fullName'];
-      } else {
-        return foundItems.first['userName'];
-      }
+      return fullName ? foundItems.first['fullName'] : foundItems.first['userName'];
     } else {
       return '';
     }
-  }
+  }*/
 
   Future<void> call(Map<String, dynamic> args) async {
     List<Map<String, dynamic>> latestDates = [];
     final rooms = await HiveCacheManager().getAllRooms();
+
     for (final room in rooms) {
       final newList = room.messages.where((element) => element.user.id != Config.me!.userId).toList();
       final date = room.messages.isNotEmpty ? (newList.isNotEmpty ? newList.last.date.toString() : '') : null;
@@ -44,54 +35,22 @@ class InitServices extends BaseService {
     var newArgs = args;
     newArgs['latestDates'] = jsonEncode(latestDates);
 
-    final client = http.Client();
-    final response =
-        await client.post(url, body: newArgs, headers: {'Authorization': 'Bearer ${Config.me!.token}'});
+    final response = await _postRequest(_url, newArgs);
     final decodedResponse = jsonDecode(response.body);
-    logger.i(decodedResponse);
+
     if (response.statusCode == 200) {
-      List<Room> rooms = [];
-      for (final room in decodedResponse['data']['rooms']) {
-        final roomObject = Room(
-            creator: User.fromJson(room['creatorUser'][0]),
-            id: room['_id'],
-            name: room['name'],
-            members: [
-              for (final memberItem in room['members'])
-                User(
-                  fullname: memberItem["fullName"],
-                  username: memberItem["userName"],
-                  role: memberItem["role"],
-                  id: memberItem['userId'],
-                )
-            ],
-            desc: room['desc'] ?? '',
-            messages: room['messages'].length > 0
-                ? ([
-                    for (final messageItem in room['messages'])
-                      Message(
-                          message: messageItem['message'],
-                          date: DateTime.parse(messageItem['dateTime']),
-                          user: User.fromJson(messageItem['fromUser'][0]),
-                          roomId: messageItem['roomId'])
-                  ])
-                : const []);
-        rooms.add(roomObject);
-        AppInit().socket?.emit('join-room', {'roomId': roomObject.id});
-      }
+      final List<Room> rooms = _processRooms(decodedResponse['data']['rooms']);
 
       for (final room in rooms) {
         await HiveCacheManager().saveRoom(room);
       }
-
-      // if(rooms.isNotEmpty){
-      //   await _dropRooms(args['userId']);
-      // }
-
+      logger.w(decodedResponse);
       for (final messageObject in decodedResponse['data']['latestOfflineMessages']) {
         final userJson = messageObject['user'][0];
         final user =
             User(fullname: userJson['fullName'], id: userJson['_id'], username: userJson['userName']);
+        logger.w(messageObject['dateTime']);
+        logger.w(messageObject);
         await HiveCacheManager().save(Contact(user: user, messages: [
           Message(
               date: DateTime.parse(messageObject['dateTime']), message: messageObject['message'], user: user)
@@ -99,18 +58,49 @@ class InitServices extends BaseService {
       }
       await _dropMessages(args['userId']);
     }
-    try {} catch (er) {
-      print(er);
-    }
   }
 
   Future<void> _dropMessages(String userId) async {
-    try {
-      final client = http.Client();
-      await client
-          .post(urlDrop, body: {'userId': userId}, headers: {'Authorization': 'Bearer ${Config.me!.token}'});
-    } catch (er) {
-      print(er);
+    await _postRequest(_urlDrop, {'userId': userId});
+  }
+
+  Future<http.Response> _postRequest(Uri url, Map<String, dynamic> body) async {
+    final client = http.Client();
+    return await client.post(url, body: body, headers: {'Authorization': 'Bearer ${Config.me!.token}'});
+  }
+
+  List<Room> _processRooms(List<dynamic> jsonRooms) {
+    final List<Room> rooms = [];
+  logger.i(jsonRooms);
+    for (final room in jsonRooms) {
+      final roomObject = Room(
+          creator: User.fromJson(room['creatorUser'][0]),
+          id: room['_id'],
+          name: room['name'],
+          members: [
+            for (final memberItem in room['members'])
+              User(
+                fullname: memberItem["fullName"],
+                username: memberItem["userName"],
+                role: memberItem["role"],
+                id: memberItem['userId'],
+              )
+          ],
+          desc: room['desc'] ?? '',
+          messages: room['messages'].length > 0
+              ? ([
+                  for (final messageItem in room['messages'])
+                    Message(
+                        message: messageItem['message'],
+                        date: DateTime.parse(messageItem['dateTime']),
+                        user: User.fromJson(messageItem['fromUser'][0]),
+                        roomId: room['_id'])
+                ])
+              : const []);
+      rooms.add(roomObject);
+      AppInit().socket?.emit('join-room', {'roomId': roomObject.id});
     }
+
+    return rooms;
   }
 }

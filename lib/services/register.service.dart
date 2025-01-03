@@ -13,14 +13,12 @@ class RegisterService extends BaseService {
     final response = await client.post(url, body: args);
     final decodedResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      logger.w(decodedResponse);
       Config.errorHandler(title: decodedResponse["error_code"], message: decodedResponse["message"]);
       await UserCacheManager.save(
         userId: decodedResponse["data"]["_id"],
         fullname: decodedResponse["data"]["fullName"],
         username: decodedResponse["data"]["userName"],
         token: decodedResponse["data"]["token"],
-
       );
       return true;
     } else {

@@ -22,17 +22,38 @@ class AppInit {
   Room? currentChatRoom;
 
   void initSocketClient() {
-    AppInit().socket = IO.io('${Config.socketServerBaseUrl}?token=${Config.me!.token}',
-        IO.OptionBuilder().setTransports(["websocket"]).disableAutoConnect().enableForceNew().build());
+    Config.connectionStateStream.sink.add(ConnectionStatus.connecting);
+    AppInit().socket = IO.io(
+        '${Config.socketServerBaseUrl}?token=${Config.me!.token}',
+        IO.OptionBuilder()
+            .setTransports(["websocket"])
+            .disableAutoConnect()
+            .enableForceNew()
+            .enableReconnection()
+            .setReconnectionDelay(3000)
+            .setReconnectionAttempts(2)
+            .build());
 
-    AppInit().socket?.onConnect((data) => logger.i('Connected aaaa'));
-    AppInit().socket?.onDisconnect((data) => logger.i('Disconnected aaaa'));
+    AppInit().socket?.onConnect((data) {
+      Config.connectionStateStream.sink.add(ConnectionStatus.online);
+    });
+
+    AppInit().socket?.onReconnectFailed((data) {
+      Config.connectionStateStream.sink.add(ConnectionStatus.connectionFailed);
+    });
+    AppInit().socket?.onDisconnect((data) {
+      Config.connectionStateStream.sink.add(ConnectionStatus.connecting);
+      // _retryConnection(); // تلاش برای اتصال مجدد
+    });
     AppInit().socket?.on('onMessage', (data) => _onMessageHandler(data));
+    AppInit().socket?.on('onGroupCreate', (data) => _onGroupCreateHandler(data));
 
     AppInit().socket?.connect();
   } // end socket client initialization
 
   _onMessageHandler(Map<String, dynamic> json) {
+    logger.w("onMessage");
+    logger.w(json);
     final messagesGet = Get.find<MessagesGet>();
     final message = Message(
         date: DateTime.now(),
@@ -59,4 +80,44 @@ class AppInit {
       messagesGet.roomStream.sink.add(true);
     }
   }
+
+  _onGroupCreateHandler(Map<String, dynamic> json) async {
+    logger.w("onGroupCreate");
+    logger.w(json);
+    List<User> members = [];
+    for (int i = 0; i < json['message']['members'].length; i++) {
+      final user = User.fromMakeRoomJson(json['message']['members'][i]);
+      members.add(user);
+    }
+    Room room = Room(
+      id: json['message']['roomId'],
+      name: json['message']['roomName'],
+      desc: json['message']['roomDesc'],
+      members: members,
+      creator: User.fromMakeRoomJson(json['message']['creator']),
+    );
+    logger.i(room.toString());
+    // TODO: fix role of members and creator
+    await HiveCacheManager().saveRoom(room);
+    final messagesGet = Get.find<MessagesGet>();
+    messagesGet.init();
+
+  }
+
+/*// تابع بازتلاش برای اتصال مجدد
+  int _retryCount = 0; // شمارنده تلاش‌ها
+  final int _maxRetries = 5; // حداکثر تعداد تلاش‌ها
+  void _retryConnection() {
+    if (_retryCount < _maxRetries) {
+      _retryCount++;
+      Future.delayed(Duration(seconds: 3), () {
+        if (AppInit().socket?.connected == false) {
+          logger.i('Retrying connection ($_retryCount/$_maxRetries)...');
+          AppInit().socket?.connect();
+        }
+      });
+    } else {
+      logger.e('Max retry attempts reached.');
+    }
+  }*/
 }

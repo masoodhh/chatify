@@ -62,7 +62,10 @@ class Setting extends StatelessWidget {
                                 ))),
                   )),
               Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 50),
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Text(Config.me!.username, style: MyTextStyles.header2))
+              ,Padding(
+                  padding: const EdgeInsets.only(top: 5, bottom: 50),
                   child: Text(Config.me!.fullname, style: MyTextStyles.header)),
               const SettingItemWidget(
                 title: "Privecy Policy",

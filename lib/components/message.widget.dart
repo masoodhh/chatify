@@ -8,14 +8,12 @@ import 'package:get/get.dart';
 
 class MessageWidget extends StatelessWidget {
   final Contact contact;
+
   const MessageWidget({Key? key, required this.contact}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final int badgeCount = contact.messages
-        .where((element) => element.seen == false)
-        .toList()
-        .length;
+    final int badgeCount = contact.messages.where((element) => element.seen == false).toList().length;
 
     return Stack(
       alignment: Alignment.center,
@@ -24,8 +22,7 @@ class MessageWidget extends StatelessWidget {
           onTap: () => Get.toNamed(PageRoutes.chat, arguments: contact.user),
           child: Container(
             decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(width: .5, color: Colors.grey.shade300)),
+              border: Border(bottom: BorderSide(width: .5, color: Colors.grey.shade300)),
             ),
             padding: const EdgeInsets.all(24),
             child: Row(
@@ -37,10 +34,16 @@ class MessageWidget extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 28,
                     backgroundColor: Colors.grey.shade300,
-                    child: CachedNetworkImage(
-                      imageUrl: Config.showAvatarBaseUrl(contact.user.id),
-                      errorWidget: (context, url, error) => Icon(Icons.person,
-                          color: Colors.grey.shade400, size: 50),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(28),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        width: 56,
+                        height: 56,
+                        imageUrl: Config.showAvatarBaseUrl(contact.user.id),
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.person, color: Colors.grey.shade400, size: 50),
+                      ),
                     ),
                   ),
                 ),
@@ -55,24 +58,17 @@ class MessageWidget extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
-                            child: Text(contact.user.fullname,
-                                style: MyTextStyles.title),
+                            child: Text(contact.user.fullname, style: MyTextStyles.title),
                           ),
-                          Text(
-                              contact.messages.isNotEmpty
-                                  ? _beautifyDate(contact.messages.last.date)
-                                  : '',
+                          Text(contact.messages.isNotEmpty ? _beautifyDate(contact.messages.last.date) : '',
                               style: MyTextStyles.small)
                         ],
                       ),
-                      SizedBox(
-                        height: 16,
-                        child: Text(
-                            contact.messages.isNotEmpty
-                                ? contact.messages.last.message
-                                : '',
-                            style: MyTextStyles.headline
-                                .copyWith(overflow: TextOverflow.ellipsis)),
+                      Text(
+                        contact.messages.isNotEmpty ? contact.messages.last.message : '',
+                        style: MyTextStyles.headline.copyWith(overflow: TextOverflow.ellipsis),
+                        maxLines: 1,
+                        textDirection: TextDirection.rtl,
                       ),
                     ],
                   ),
@@ -90,8 +86,7 @@ class MessageWidget extends StatelessWidget {
                 radius: 10,
                 backgroundColor: MyColors.primaryColor,
                 child: Text(badgeCount.toString(),
-                    style: MyTextStyles.small.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                    style: MyTextStyles.small.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
               ),
             ),
           ),

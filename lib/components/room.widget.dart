@@ -8,12 +8,12 @@ import 'package:get/get.dart';
 
 class RoomWidget extends StatelessWidget {
   final Room room;
+
   const RoomWidget({Key? key, required this.room}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final int badgeCount =
-        room.messages.where((element) => element.seen == false).toList().length;
+    final int badgeCount = room.messages.where((element) => element.seen == false).toList().length;
 
     return Stack(
       alignment: Alignment.center,
@@ -22,8 +22,7 @@ class RoomWidget extends StatelessWidget {
           onTap: () => Get.toNamed(PageRoutes.chat, arguments: room),
           child: Container(
             decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(width: .5, color: Colors.grey.shade300)),
+              border: Border(bottom: BorderSide(width: .5, color: Colors.grey.shade300)),
             ),
             padding: const EdgeInsets.all(24),
             child: Row(
@@ -43,8 +42,8 @@ class RoomWidget extends StatelessWidget {
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           imageUrl: Config.showRoomAvatarBaseUrl(room.id),
-                          errorWidget: (context, url, error) => Icon(Icons.person,
-                              color: Colors.grey.shade400, size: 50),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.person, color: Colors.grey.shade400, size: 50),
                         ),
                       ),
                     ),
@@ -63,21 +62,17 @@ class RoomWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(room.name, style: MyTextStyles.title),
                           ),
-                          Text(
-                              room.messages.isNotEmpty
-                                  ? _beautifyDate(room.messages.last.date)
-                                  : '',
+                          Text(room.messages.isNotEmpty ? _beautifyDate(room.messages.last.date) : '',
                               style: MyTextStyles.small)
                         ],
                       ),
-                      SizedBox(
-                        height: 16,
-                        child: Text(
-                            room.messages.isNotEmpty
-                                ? '${room.messages.last.user.fullname}: ${room.messages.last.message}'
-                                : '',
-                            style: MyTextStyles.headline
-                                .copyWith(overflow: TextOverflow.ellipsis)),
+                      Text(
+                        room.messages.isNotEmpty
+                            ? '${room.messages.last.user.fullname}: ${room.messages.last.message}'
+                            : '',
+                        style: MyTextStyles.headline.copyWith(overflow: TextOverflow.ellipsis),
+                        maxLines: 1,
+                        textDirection: TextDirection.rtl,
                       ),
                     ],
                   ),
@@ -95,8 +90,7 @@ class RoomWidget extends StatelessWidget {
                 radius: 10,
                 backgroundColor: MyColors.primaryColor,
                 child: Text(badgeCount.toString(),
-                    style: MyTextStyles.small.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                    style: MyTextStyles.small.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
               ),
             ),
           ),

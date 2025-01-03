@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatify/cacheManager/hive.cache.dart';
 import 'package:chatify/cacheManager/user.cache.dart';
 import 'package:chatify/constants/config.dart';
@@ -20,6 +21,8 @@ class SettingGet extends GetxController {
       final uploadResult = await uploadService.call({'avatar': pickedFile.path, 'userId': Config.me!.userId});
       if (uploadResult) {
         profileAvatar.value = File(pickedFile.path);
+        CachedNetworkImage.evictFromCache(Config.showAvatarBaseUrl(Config.me!.userId));
+
       }
     }
   }
