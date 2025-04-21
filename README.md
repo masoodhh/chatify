@@ -34,8 +34,20 @@ Below are some screenshots to give an overview of the application:
 5. **Chat Screen**: Real-time messaging interface.
 6. **Profile Management**: Setting and updating profile picture and information.
 
-Screenshots are located in the `/reliease/screenshots` directory.
-
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+<img src="release/screenshots/Screenshot_1.png" alt="اسکرین‌شات 1" width="200" />
+<img src="release/screenshots/Screenshot_2.png" alt="اسکرین‌شات 2" width="200" />
+<img src="release/screenshots/Screenshot_3.png" alt="اسکرین‌شات 3" width="200" />
+<img src="release/screenshots/Screenshot_4.png" alt="اسکرین‌شات 4" width="200" />
+<img src="release/screenshots/Screenshot_5.png" alt="اسکرین‌شات 5" width="200" />
+<img src="release/screenshots/Screenshot_6.png" alt="اسکرین‌شات 6" width="200" />
+<img src="release/screenshots/Screenshot_7.png" alt="اسکرین‌شات 7" width="200" />
+<img src="release/screenshots/Screenshot_8.png" alt="اسکرین‌شات 8" width="200" />
+<img src="release/screenshots/Screenshot_9.png" alt="اسکرین‌شات 9" width="200" />
+<img src="release/screenshots/Screenshot_10.png" alt="اسکرین‌شات 10" width="200" />
+<img src="release/screenshots/Screenshot_11.png" alt="اسکرین‌شات 11" width="200" />
+<img src="release/screenshots/Screenshot_12.png" alt="اسکرین‌شات 12" width="200" />
+</div>
 ---
 
 ## Installation
@@ -144,6 +156,21 @@ For any inquiries or feedback, reach out to me at:
     - صفحه ورود.
 5. **صفحه چت**: رابط پیام‌رسانی در زمان واقعی.
 6. **مدیریت پروفایل**: تنظیم و به‌روزرسانی عکس و اطلاعات پروفایل.
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+<img src="release/screenshots/Screenshot_1.png" alt="اسکرین‌شات 1" width="200" />
+<img src="release/screenshots/Screenshot_2.png" alt="اسکرین‌شات 2" width="200" />
+<img src="release/screenshots/Screenshot_3.png" alt="اسکرین‌شات 3" width="200" />
+<img src="release/screenshots/Screenshot_4.png" alt="اسکرین‌شات 4" width="200" />
+<img src="release/screenshots/Screenshot_5.png" alt="اسکرین‌شات 5" width="200" />
+<img src="release/screenshots/Screenshot_6.png" alt="اسکرین‌شات 6" width="200" />
+<img src="release/screenshots/Screenshot_7.png" alt="اسکرین‌شات 7" width="200" />
+<img src="release/screenshots/Screenshot_8.png" alt="اسکرین‌شات 8" width="200" />
+<img src="release/screenshots/Screenshot_9.png" alt="اسکرین‌شات 9" width="200" />
+<img src="release/screenshots/Screenshot_10.png" alt="اسکرین‌شات 10" width="200" />
+<img src="release/screenshots/Screenshot_11.png" alt="اسکرین‌شات 11" width="200" />
+<img src="release/screenshots/Screenshot_12.png" alt="اسکرین‌شات 12" width="200" />
+</div>
 
 ---
 
