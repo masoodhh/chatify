@@ -115,7 +115,7 @@ For any inquiries or feedback, reach out to me at:
 
 - Email: masoodyarab2@gmail.com
 - GitHub: [masoodhh](https://github.com/masoodhh)
-- LinkedIn: [Your Name]()
+- LinkedIn: [Masood Hasanzadeh](https://www.linkedin.com/in/masood-hasanzadeh)
 
 ---
 
@@ -239,7 +239,7 @@ For any inquiries or feedback, reach out to me at:
 
 - ایمیل: masoodyarab2@gmail.com
 - گیت‌هاب: [masoodhh](https://github.com/masoodhh)
-- لینکدین: [Your Name]()
+- لینکدین: [Masood Hasanzadeh](https://www.linkedin.com/in/masood-hasanzadeh)
 
 </div>
 
